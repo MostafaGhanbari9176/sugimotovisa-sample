@@ -1,4 +1,4 @@
--- Find all authors who have published more than 5 books
+-- 1. Find all authors who have published more than 5 books
 -- the final query : 
 select a.name from author as a inner join book as b on a.author_id=b.author_id group by a.name having count(*) >5;
 
@@ -18,7 +18,7 @@ select a.name from author as a inner join book as b on a.author_id=b.author_id g
 
 -------------------------------------------------------------------------------------------------------------------------
 
--- Calculate the average book price for each country, based on the authors' countries
+-- 2. Calculate the average book price for each country, based on the authors' countries
 -- the final query : 
 select a.country, avg(b.price) from author as a INNER JOIN book as b on a.author_id=b.author_id group by a.country;
 
@@ -28,7 +28,22 @@ select a.country, avg(b.price) from author as a INNER JOIN book as b on a.author
 -- the price from book TABLE and the country from the author TABLE.
 -- on this query we join the tables with author_id foreign key.
 -- on this query the SQL engine make a new temporary table base on JOIN clause like this : 
--- | author_id | name | country | book_id | author_id | title | price | currency | published_at |
+-- | author_id | name | country | book_id | title | price | currency | published_at |
 -- and then run the query on this table.
 
+-------------------------------------------------------------------------------------------------------------------------
+
+-- 3. Retrieve a list of books that includes author names, sorted by price in descending order, and filterable by a specific year of publication.
+-- the final query : 
+select a.name as author_name, b.title as book_name, concat(b.price,b.currency) as book_price, b.published_at 
+from author as a INNER JOIN book as b on a.author_id=b.author_id 
+where EXTRACT(year from b.published_at) = '2024'
+order by b.price DESC;
+
+-- explanation : 
+
+-- for this query we should JOIN the author table to book because we need author name.
+-- and using ORDER BY for sorting the result base on book price
+-- and using EXTRACT function for extract year from DATE
+-- and also for better result i use the concat function for concatenate the price and currency columns from book TABLE
 
