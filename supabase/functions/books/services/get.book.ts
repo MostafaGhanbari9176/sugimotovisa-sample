@@ -1,9 +1,10 @@
 import { createClient } from "@supabase/supabase-js";
 import { SortType } from "../dto/books-request.dto.ts";
+import {ErrorResponse} from "../dto/error-response.dto.ts";
 
-export async function getBookService(
+export async function getBook(
     authorId: string | null,
-    sort: string | null,
+    sort: SortType | null,
     page: number,
     limit: number,
 ) {
@@ -16,7 +17,23 @@ export async function getBookService(
         .order("published_at", { ascending: sort === SortType.ASC })
         .range(offset, offset + limit - 1);
 
-    if (error) throw new Error(error.message);
+    console.dir({data, error})
+
+    if (error)
+        throw new ErrorResponse(`books query error: ${error.message}`);
+
+    return data;
+}
+
+export async function countBooks(){
+    const { data, error } = await getClient()
+        .from("book")
+        .select("count(*)")
+
+    console.dir({data, error})
+
+    if (error)
+        throw new ErrorResponse(`count query error: ${error.message}`);
 
     return data;
 }
