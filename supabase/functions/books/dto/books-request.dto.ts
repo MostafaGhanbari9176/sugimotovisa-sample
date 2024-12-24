@@ -5,8 +5,8 @@ export enum SortType {
 
 export interface BooksRequestParamsDTO {
     authorId: string|null;
-    sort: SortType|null;
-    page: string;
-    limit: string;
+    sort: SortType;
+    page: number;
+    limit: number;
 }
 

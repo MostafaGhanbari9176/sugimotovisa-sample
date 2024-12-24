@@ -6,9 +6,16 @@ export function validateGetBooks(req: Request): BooksRequestParamsDTO {
     const url = new URL(req.url);
 
     const authorId: string | null = url.searchParams.get("authorId");
-    const sort: string | null = url.searchParams.get("sort");
-    const page: string = url.searchParams.get("page") || "1";
-    const limit: string = url.searchParams.get("limit") || "5";
+    const sort: string = url.searchParams.get("sort") || SortType.DESC;
+    const page: number = Number.parseInt(url.searchParams.get("page") || "1");
+    const limit: number = Number.parseInt(url.searchParams.get("limit") || "5");
+
+    console.dir(   {
+        authorId,
+        sort,
+        page,
+        limit,
+    })
 
     if (authorId != null) {
         if(v4.validate(authorId))
@@ -21,11 +28,11 @@ export function validateGetBooks(req: Request): BooksRequestParamsDTO {
         }
     }
 
-    if (!Number.isInteger(page)) {
+    if (!Number.isSafeInteger(page)) {
         throw new ErrorResponse(`page must be a number`, 400);
     }
 
-    if (!Number.isInteger(limit)) {
+    if (!Number.isSafeInteger(limit)) {
         throw new ErrorResponse(`limit must be a number`, 400);
     }
 
@@ -33,6 +40,6 @@ export function validateGetBooks(req: Request): BooksRequestParamsDTO {
         authorId,
         sort,
         page,
-        limit,
+        limit
     };
 }
