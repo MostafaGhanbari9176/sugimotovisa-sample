@@ -50,7 +50,7 @@ export async function countBooks(authorId: string | null) {
 
 async function getClient() {
   const supabaseUrl = "https://djzzyyhkpusbeldxvdqc.supabase.co";
-  const supabaseKey = Deno.env.get("SUPABASE_KEY");
+  const supabaseKey = Deno.env.get("SUPABASE_ANON_KEY");
   const supabase = await createClient(supabaseUrl, supabaseKey);
 
   return supabase;
