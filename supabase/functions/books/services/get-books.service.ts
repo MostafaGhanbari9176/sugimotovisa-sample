@@ -14,8 +14,8 @@ export async function getBook(
 
     const {data, error} = await client
         .from("book")
-        .select("*, author(name)")
-        //.eq("author_id", authorId || undefined)
+        .select("title, price, currency, published_at, author(name)")
+        //.eq("author_id", authorId)
         .order("published_at", { ascending: sort === SortType.ASC })
         .range(offset, offset + limit - 1);
 
@@ -42,7 +42,7 @@ export async function countBooks(){
 
 async function getClient() {
     const supabaseUrl = "https://djzzyyhkpusbeldxvdqc.supabase.co";
-    const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRqenp5eWhrcHVzYmVsZHh2ZHFjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzQ5NTQxMDQsImV4cCI6MjA1MDUzMDEwNH0.7tGBuQTzzdRxEpknK7_C0HwLe3O0VJcCbUmdX3K8Qas";
+    const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRqenp5eWhrcHVzYmVsZHh2ZHFjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzUwNTUyMjksImV4cCI6MjA1MDYzMTIyOX0.6WwJz371h4iXREpY57SXu1CxvxvXuDpMMtvWJDTyOYg";
     const supabase = await createClient(supabaseUrl, supabaseKey);
 
     return supabase;

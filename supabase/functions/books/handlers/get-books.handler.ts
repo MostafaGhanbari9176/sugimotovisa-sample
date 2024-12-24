@@ -1,5 +1,5 @@
 import { BooksRequestParamsDTO } from "../dto/books-request.dto.ts";
-import { BooksResponseDTO } from "../dto/books-response.dto.ts";
+import {BookDTO, BooksResponseDTO} from "../dto/books-response.dto.ts";
 import { countBooks, getBook } from "../services/get-books.service.ts";
 
 export async function getBooksHandler(
@@ -15,10 +15,19 @@ export async function getBooksHandler(
 
   const booksCount = await countBooks();
 
+  const mappedBooks:BookDTO[] = books.map((book:any) => {
+    return {
+      authorName : book.author.name,
+      title : book.title,
+      price : book.price + book.currency,
+      publishDate : book.published_at,
+    }
+  })
+
   return {
-    books: books,
     page: params.page,
     pageLength: params.limit,
     pagesCount: Math.ceil(booksCount / params.limit),
+    books: mappedBooks,
   };
 }
