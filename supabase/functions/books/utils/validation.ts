@@ -1,6 +1,6 @@
 import { BooksRequestParamsDTO, SortType } from "../dto/books-request.dto.ts";
 import { ErrorResponse } from "../dto/error-response.dto.ts";
-//import { validate } from "https://deno.land/std@0.224.0/uuid/v4.ts";
+import { uuid } from " https://deno.land/x/uuid/mod.ts";
 
 export function validateGetBooks(req: Request): BooksRequestParamsDTO {
     const url = new URL(req.url);
@@ -11,8 +11,8 @@ export function validateGetBooks(req: Request): BooksRequestParamsDTO {
     const limit: string = url.searchParams.get("limit") || "5";
 
     if (authorId != null) {
-        //if(uuid.validate(authorId))
-        //throw new ErrorResponse(`authorId is not a valid UUID`, 400)
+        if(uuid.validate(authorId))
+        throw new ErrorResponse(`authorId is not a valid UUID`, 400)
     }
 
     if (sort != null) {
