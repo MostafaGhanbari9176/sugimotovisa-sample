@@ -17,7 +17,9 @@ Deno.serve(async (req) => {
     const url = new URL(req.url);
 
     if (url.pathname == "/books" && req.method == "GET") {
+
       authentication(req)
+      
       const params = validateGetBooks(req)
 
       const response = getBooksHandler(params)

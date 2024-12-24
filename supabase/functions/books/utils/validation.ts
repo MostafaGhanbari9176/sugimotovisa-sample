@@ -1,13 +1,8 @@
-import { BooksRequestDTO } from "../dto/books-request.dto.ts";
+import { BooksRequestParamsDTO, SortType } from "../dto/books-request.dto.ts";
 import { ErrorResponse } from "../dto/error-response.dto.ts";
 //import { validate } from "https://deno.land/std@0.224.0/uuid/v4.ts";
 
-enum SortType {
-    DESC = "DESC",
-    AES = "AES",
-}
-
-export function validateGetBooks(req: Request): BooksRequestDTO {
+export function validateGetBooks(req: Request): BooksRequestParamsDTO {
     const url = new URL(req.url);
 
     const authorId: string | null = url.searchParams.get("authorId");
@@ -21,7 +16,7 @@ export function validateGetBooks(req: Request): BooksRequestDTO {
     }
 
     if (sort != null) {
-        if (sort != SortType.DESC && sort != SortType.AES) {
+        if (sort != SortType.DESC && sort != SortType.ASC) {
             throw new ErrorResponse(`sort must be one of ${SortType}`, 400);
         }
     }
