@@ -3,23 +3,51 @@
 // This enables autocomplete, go to definition, etc.
 
 // Setup type definitions for built-in Supabase Runtime APIs
-console.log("Hello from Functions!")
+//import "jsr:@supabase/functions-js/edge-runtime.d.ts"
+
+console.log("Hello from Functions!");
+
+export enum SortType {
+  DESC = "DESC",
+  ASC = "ASC",
+}
 
 Deno.serve(async (req) => {
-  
-  const url = new URL(req.url)
-  console.dir(url)
-  
-  const { name } = await req.json()
-  const data = {
-    message: `Hello ${name}!`,
-  }
+  try {
+    const url = new URL(req.url);
+    if (url.pathname != "/books" && req.method == "GET") {
+      throw new Error("path not exists not found", {
+        cause: { status: 404, message: "not fount" },
+      });
+    }
 
-  return new Response(
-    JSON.stringify(data),
-    { headers: { "Content-Type": "application/json" } },
-  )
-})
+    const authorId: string | null = url.searchParams.get("authorId");
+    const sort: string | null = url.searchParams.get("sort");
+    const page: string = url.searchParams.get("page") || "1";
+    const limit: string = url.searchParams.get("limit") || "5";
+
+    const data = {
+      authorId,
+      sort,
+      page,
+      limit,
+    };
+
+    return new Response(
+      JSON.stringify(data),
+      { headers: { "Content-Type": "application/json" }, status: 200 },
+    );
+
+  } catch (e: any) {
+    return new Response(
+      JSON.stringify(e.cause),
+      {
+        status: e.cause.status,
+        headers: { "Content-Type": "application/json" },
+      },
+    );
+  }
+});
 
 /* To invoke locally:
 
