@@ -2,6 +2,8 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js";
 import { SortType } from "../dto/books-request.dto.ts";
 import {ErrorResponse} from "../dto/error-response.dto.ts";
 
+const client = await getClient()
+
 export async function getBook(
     authorId: string | null,
     sort: SortType | null,
@@ -10,10 +12,10 @@ export async function getBook(
 ) {
     const offset = (page - 1) * limit;
 
-    const { data, error } = await getClient()
+    const {data, error} = await client
         .from("book")
         .select("*, author(name)")
-        .eq("author_id", authorId || undefined)
+        //.eq("author_id", authorId || undefined)
         .order("published_at", { ascending: sort === SortType.ASC })
         .range(offset, offset + limit - 1);
 
@@ -26,16 +28,16 @@ export async function getBook(
 }
 
 export async function countBooks(){
-    const { data, error } = await getClient()
+    const { count, error } = await client
         .from("book")
-        .select("count(*)")
+        .select("*", { count: "exact", head: true });
 
-    console.dir({data, error})
+    console.dir({ count, error });
 
     if (error)
         throw new ErrorResponse(`count query error: ${error.message}`);
 
-    return data;
+    return count;
 }
 
 async function getClient() {

@@ -22,7 +22,7 @@ Deno.serve(async (req) => {
       
       const params = validateGetBooks(req)
 
-      const response = getBooksHandler(params)
+      const response = await getBooksHandler(params)
 
       return new Response(
         JSON.stringify(response),
