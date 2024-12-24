@@ -11,13 +11,6 @@ import { validateGetBooks } from "./utils/validation.ts";
 // Setup type definitions for built-in Supabase Runtime APIs
 //import "jsr:@supabase/functions-js/edge-runtime.d.ts"
 
-console.log("Hello from Functions!");
-
-export enum SortType {
-  DESC = "DESC",
-  ASC = "ASC",
-}
-
 Deno.serve(async (req) => {
   try {
 
@@ -25,9 +18,9 @@ Deno.serve(async (req) => {
 
     if (url.pathname == "/books" && req.method == "GET") {
       authentication(req)
-      validateGetBooks(req)
+      const params = validateGetBooks(req)
 
-      const response = getBooksHandler(req)
+      const response = getBooksHandler(params)
 
       return new Response(
         JSON.stringify(response),
