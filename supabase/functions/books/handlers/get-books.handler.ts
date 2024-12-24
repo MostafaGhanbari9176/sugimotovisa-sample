@@ -13,11 +13,12 @@ export async function getBooksHandler(
     params.limit,
   );
 
-  const booksCount = await countBooks();
+  const booksCount = await countBooks(params.authorId);
 
   const mappedBooks:BookDTO[] = books.map((book:any) => {
     return {
       authorName : book.author.name,
+      authorId: book.author_id,
       title : book.title,
       price : book.price + book.currency,
       publishDate : book.published_at,
@@ -26,7 +27,7 @@ export async function getBooksHandler(
 
   return {
     page: params.page,
-    pageLength: params.limit,
+    pageLength: mappedBooks.length,
     pagesCount: Math.ceil(booksCount / params.limit),
     books: mappedBooks,
   };
