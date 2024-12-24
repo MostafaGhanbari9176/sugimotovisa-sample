@@ -2,6 +2,12 @@
 // https://deno.land/manual/getting_started/setup_your_environment
 // This enables autocomplete, go to definition, etc.
 
+import { ErrorResponse } from "./dto/error-response.dto.ts";
+import { getBooksHandler } from "./handlers/get-books.handler.ts";
+import { authentication } from "./utils/authentication.ts";
+import { exceptionHandler } from "./utils/exception-handler.ts";
+import { validateGetBooks } from "./utils/validation.ts";
+
 // Setup type definitions for built-in Supabase Runtime APIs
 //import "jsr:@supabase/functions-js/edge-runtime.d.ts"
 
@@ -14,38 +20,29 @@ export enum SortType {
 
 Deno.serve(async (req) => {
   try {
+
     const url = new URL(req.url);
-    if (url.pathname != "/books" && req.method == "GET") {
-      throw new Error("path not exists not found", {
-        cause: { status: 404, message: "not fount" },
-      });
+
+    if (url.pathname == "/books" && req.method == "GET") {
+      authentication(req)
+      validateGetBooks(req)
+
+      const response = getBooksHandler(req)
+
+      return new Response(
+        JSON.stringify(response),
+        {
+          headers:{"Content-Type":"application/json"},
+          status:200
+        }
+      )
+    }
+    else{
+      throw new ErrorResponse("path not exists not found", 404);
     }
 
-    const authorId: string | null = url.searchParams.get("authorId");
-    const sort: string | null = url.searchParams.get("sort");
-    const page: string = url.searchParams.get("page") || "1";
-    const limit: string = url.searchParams.get("limit") || "5";
-
-    const data = {
-      authorId,
-      sort,
-      page,
-      limit,
-    };
-
-    return new Response(
-      JSON.stringify(data),
-      { headers: { "Content-Type": "application/json" }, status: 200 },
-    );
-
   } catch (e: any) {
-    return new Response(
-      JSON.stringify(e.cause),
-      {
-        status: e.cause.status,
-        headers: { "Content-Type": "application/json" },
-      },
-    );
+    return exceptionHandler(e)
   }
 });
 
