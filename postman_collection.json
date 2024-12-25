@@ -1,0 +1,108 @@
+{
+	"info": {
+		"_postman_id": "4096c6d2-c0b6-4c6c-ada5-d65ddcf9e071",
+		"name": "sample-task",
+		"description": "A collection containing login and interactions with the books API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "3060890",
+		"_collection_link": "https://www.postman.com/blue-capsule-887187/workspace/sugimotovisa/collection/3060890-4096c6d2-c0b6-4c6c-ada5-d65ddcf9e071?action=share&source=collection_link&creator=3060890"
+	},
+	"item": [
+		{
+			"name": "books",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsImtpZCI6IlF0S0NWK0RaeW9ucFk5SFYiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL2Rqenp5eWhrcHVzYmVsZHh2ZHFjLnN1cGFiYXNlLmNvL2F1dGgvdjEiLCJzdWIiOiI0ZmUwMDdmNS05NjI4LTQ2MzctYWU5Yy1iYmYzMzhmN2RlOWIiLCJhdWQiOiJhdXRoZW50aWNhdGVkIiwiZXhwIjoxNzM1MDc5MjU4LCJpYXQiOjE3MzUwNzU2NTgsImVtYWlsIjoiZUBtYS5pbCIsInBob25lIjoiIiwiYXBwX21ldGFkYXRhIjp7InByb3ZpZGVyIjoiZW1haWwiLCJwcm92aWRlcnMiOlsiZW1haWwiXX0sInVzZXJfbWV0YWRhdGEiOnsiZW1haWxfdmVyaWZpZWQiOnRydWV9LCJyb2xlIjoiYXV0aGVudGljYXRlZCIsImFhbCI6ImFhbDEiLCJhbXIiOlt7Im1ldGhvZCI6InBhc3N3b3JkIiwidGltZXN0YW1wIjoxNzM1MDc1NjU4fV0sInNlc3Npb25faWQiOiJiNDQ4NTRmMS1lNGJhLTQxYmEtOWExMS0zZjgyNjQwZGY3ZDAiLCJpc19hbm9ueW1vdXMiOmZhbHNlfQ.T5jR0KEEKUB9HgSKT7Sc7W7BzOzi6kefJt8DQqFF8Ck",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://djzzyyhkpusbeldxvdqc.supabase.co/functions/v1/books",
+					"protocol": "https",
+					"host": [
+						"djzzyyhkpusbeldxvdqc",
+						"supabase",
+						"co"
+					],
+					"path": [
+						"functions",
+						"v1",
+						"books"
+					],
+					"query": [
+						{
+							"key": "authorId",
+							"value": "f6fb1530-b124-4e6a-925e-9ce48fc01c06",
+							"disabled": true
+						},
+						{
+							"key": "sort",
+							"value": "DESC",
+							"description": "DESC, ASC",
+							"disabled": true
+						},
+						{
+							"key": "page",
+							"value": "1",
+							"disabled": true
+						},
+						{
+							"key": "limit",
+							"value": "10",
+							"disabled": true
+						}
+					]
+				},
+				"description": "Fetches a list of books based on optional query parameters such as `authorId`, `sort`, `page`, and `limit   `**`first use login method for having an access token`**"
+			},
+			"response": []
+		},
+		{
+			"name": "login",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "apikey",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRqenp5eWhrcHVzYmVsZHh2ZHFjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzUwNTUyMjksImV4cCI6MjA1MDYzMTIyOX0.6WwJz371h4iXREpY57SXu1CxvxvXuDpMMtvWJDTyOYg",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"email\": \"e@ma.il\",\n  \"password\": \"123456\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://djzzyyhkpusbeldxvdqc.supabase.co/auth/v1/token?grant_type=password",
+					"protocol": "https",
+					"host": [
+						"djzzyyhkpusbeldxvdqc",
+						"supabase",
+						"co"
+					],
+					"path": [
+						"auth",
+						"v1",
+						"token"
+					],
+					"query": [
+						{
+							"key": "grant_type",
+							"value": "password"
+						}
+					]
+				},
+				"description": "For retrieving an access token, use this method."
+			},
+			"response": []
+		}
+	]
+}
